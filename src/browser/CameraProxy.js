@@ -65,6 +65,12 @@ function capture(success, errorCallback, opts) {
     var parent = document.createElement('div');
 
     var video = document.createElement('video');
+
+    // If no options are passed set defaults to nothing.
+    if (!opts[10]) {
+        opts[10] = {};
+    }
+
     // If no button is supplied create one.
     var capturebutton = opts[10].capturebutton ? opts[10].capturebutton : document.createElement('button');
     if (!opts[10].capturebutton) {
@@ -83,7 +89,7 @@ function capture(success, errorCallback, opts) {
         opts[10] = {};
     }
     parent.className = opts[10].className ? opts[10].className : 'cordova-camera-capture';
-    // No custom class, setting default to white background with a video preview and capture.     
+    // No custom class, setting default to white background with a video preview and capture.
     if (!opts[10].className) {
         parent.style.position = 'absolute';
         parent.style.zIndex = HIGHEST_POSSIBLE_Z_INDEX;

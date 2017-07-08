@@ -65,6 +65,10 @@ function capture(success, errorCallback, opts) {
     var parent = document.createElement('div');
 
     var video = document.createElement('video');
+    // If no options are passed set defaults to nothing.
+    if (!opts[10]) {
+        opts[10] = {};
+    }
     // If no button is supplied create one.
     var capturebutton = opts[10].capturebutton ? opts[10].capturebutton : document.createElement('button');
     if (!opts[10].capturebutton) {

@@ -196,7 +196,7 @@ function capture(success, errorCallback, opts) {
         canvas.getContext('2d').drawImage(video, 0, 0, targetWidth, targetHeight);
 
         // Convert image stored in canvas to base64 encoded image.
-        var imageData = canvas.toDataURL('image/png');
+        var imageData = canvas.toDataURL('image/jpg', 0.8);
         imageData = imageData.replace('data:image/png;base64,', '');
 
         cleanup();

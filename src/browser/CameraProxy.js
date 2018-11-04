@@ -188,10 +188,44 @@ function capture (success, errorCallback, opts) {
 
     capturebutton.onclick = function () {
         // create a canvas and capture a frame from video stream
+        var scale, newwidth, newheight;
+        var videoHeight = video.videoHeight ? video.videoHeight : targetHeight;
+        var videoWidth = video.videoWidth ? video.videoWidth : targetWidth;
         var canvas = document.createElement('canvas');
-        canvas.width = targetWidth;
-        canvas.height = targetHeight;
-        canvas.getContext('2d').drawImage(video, 0, 0, targetWidth, targetHeight);
+        if (opts[10].forceTargetSize) {
+            // Force output image to be the same size as target size, aspect is different center image.
+            var paddingy = 0;
+            var paddingx = 0;
+            scale = videoWidth / videoHeight;
+            newwidth = targetWidth;
+            newheight = newwidth / scale;
+            if (newheight > targetHeight) {
+                newheight = targetHeight;
+                newwidth = newheight * scale;
+            }
+            if (newheight < targetHeight) {
+                paddingy = (targetHeight - newheight)/2;
+            }
+            if (newwidth < targetWidth) {
+                paddingx = (targetWidth - newwidth)/2;
+            }
+            canvas.width = targetWidth;
+            canvas.height = targetHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0, videoWidth, videoHeight,
+                paddingx, paddingy, newwidth, newheight);
+        } else {
+            if (videoWidth / videoHeight < targetWidth / targetHeight) {
+                scale = videoWidth / videoHeight;
+            } else {
+                scale = targetWidth / targetHeight;
+            }
+            newheight = scale*videoHeight;
+            newwidth = scale*videoWidth;
+            canvas.width = newwidth;
+            canvas.height = newheight;
+            canvas.getContext('2d').drawImage(video, 0, 0, videoWidth, videoHeight,
+                0, 0, newwidth, newheight);
+        }
 
         // convert image stored in canvas to base64 encoded image
         var imageData = canvas.toDataURL('image/png');
